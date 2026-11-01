@@ -7,9 +7,9 @@ use crossterm::{
 use ratatui::{
     Terminal,
     backend::CrosstermBackend,
-    layout::{Constraint, Direction, Layout, Rect},
+    layout::{Alignment, Constraint, Direction, Layout, Rect},
     style::{Color, Style},
-    widgets::{Block, BorderType, Cell, Paragraph, Row, Table},
+    widgets::{Block, BorderType, Borders, Cell, Row, Table},
 };
 use std::time::Duration;
 
@@ -98,14 +98,17 @@ pub fn run_tui() {
             .draw(|f| {
                 let chunks = Layout::default()
                     .direction(Direction::Vertical)
-                    .constraints([Constraint::Length(3), Constraint::Min(5)])
+                    .constraints([
+                        Constraint::Length(1),
+                        Constraint::Min(4),
+                        Constraint::Length(1),
+                    ])
                     .split(f.area());
-                let title = Paragraph::new(format!("MyAppTime v{}", env!("CARGO_PKG_VERSION")))
-                    .block(
-                        Block::bordered()
-                            .border_type(BorderType::Rounded)
-                            .border_style(Style::new().blue()),
-                    );
+                let title = Block::default()
+                    .borders(Borders::TOP)
+                    .border_style(Style::new().blue())
+                    .title(format!("┤ MyAppTime v{} ├", env!("CARGO_PKG_VERSION")))
+                    .title_alignment(Alignment::Center);
 
                 f.render_widget(title, chunks[0]);
 
@@ -118,9 +121,17 @@ pub fn run_tui() {
                     ])
                     .split(chunks[1]);
 
-                draw_col(f, cols[0], "Today", &apps0, state.scroll);
-                draw_col(f, cols[1], "Last Week", &apps1, state.scroll);
-                draw_col(f, cols[2], "Last Month", &apps2, state.scroll);
+                draw_col(f, cols[0], "┤ Today ├", &apps0, state.scroll);
+                draw_col(f, cols[1], "┤ Last Week ├", &apps1, state.scroll);
+                draw_col(f, cols[2], "┤ Last Month ├", &apps2, state.scroll);
+
+                let hint = Block::default()
+                    .borders(Borders::BOTTOM)
+                    .border_style(Style::new().blue())
+                    .title("┤ [J]/[↓] - Scroll down │ [K]/[↑] - Scroll up │ [Q] - Quit ├")
+                    .title_alignment(Alignment::Center);
+
+                f.render_widget(hint, chunks[2]);
             })
             .unwrap();
 
