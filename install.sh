@@ -2,7 +2,7 @@
 
 if [[ ! -d ".git" && ! -f "install.sh" ]]; then
     if [[ ! -d "my-app-time" ]]; then
-        git clone --depth 1 https://github.com/desyatkoff/my-app-time.git
+        git clone --depth 1 https://github.com/desyatkas/my-app-time.git
     fi
 
     cd "my-app-time"

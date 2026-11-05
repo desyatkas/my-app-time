@@ -24,8 +24,8 @@
 
 ## Installation
 
-```Shell
-bash <(curl -fsSL https://raw.githubusercontent.com/desyatkoff/my-app-time/main/install.sh)
+```sh
+curl -fsSL https://raw.githubusercontent.com/desyatkas/my-app-time/main/install.sh | sh
 ```
 
 ## Usage
@@ -34,9 +34,9 @@ Keep `mat --start` running in the background, use `mat --tui` to see your usage 
 
 ## Feedback
 
-Found a bug? [Open an issue](https://github.com/desyatkoff/my-app-time/issues/new).
+Found a bug? [Open an issue](https://github.com/desyatkas/my-app-time/issues/new).
 
-Want to request a feature? [Start a discussion](https://desyatkoff/my-app-time/discussions/new?category=ideas).
+Want to request a feature? [Start a discussion](https://desyatkas/my-app-time/discussions/new?category=ideas).
 
 ## Contributing
 

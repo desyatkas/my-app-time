@@ -171,7 +171,7 @@ fn draw_col(
 
     apps_sorted.sort_by(|a, b| b.1.cmp(&a.1));
 
-    let max_rows = (area.height as usize).saturating_sub(3); // title + header + scrollbar
+    let max_rows = (area.height as usize).saturating_sub(3);
     let start = scroll.min(apps_sorted.len().saturating_sub(1));
     let end = (start + max_rows).min(apps_sorted.len());
     let header = Row::new([Cell::from("App"), Cell::from("Time")])
