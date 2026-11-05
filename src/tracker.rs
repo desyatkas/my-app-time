@@ -1,6 +1,13 @@
 use crate::storage::{get_dates, load_for_date, path_for_date};
 use kdotool::get_active_window_info;
-use std::{thread, time::Duration};
+use serde_json::to_string_pretty;
+use std::{
+    env::current_exe,
+    fs::{create_dir_all, write},
+    process::{Command, id},
+    thread::sleep,
+    time::Duration,
+};
 
 pub fn get_active_app() -> Option<String> {
     if let Ok(info) = get_active_window_info() {
@@ -10,7 +17,7 @@ pub fn get_active_app() -> Option<String> {
     None
 }
 
-pub fn run_tracking() {
+pub fn start_tracking() {
     let mut tick = 0;
     let mut stats = load_for_date(&get_dates().0);
 
@@ -26,14 +33,32 @@ pub fn run_tracking() {
         if tick % 60 == 0 {
             let today = get_dates().0;
 
-            std::fs::create_dir_all(path_for_date(&today).parent().unwrap()).unwrap();
-            std::fs::write(
-                path_for_date(&today),
-                serde_json::to_string_pretty(&stats).unwrap(),
-            )
-            .unwrap();
+            create_dir_all(path_for_date(&today).parent().unwrap()).unwrap();
+            write(path_for_date(&today), to_string_pretty(&stats).unwrap()).unwrap();
         }
 
-        thread::sleep(Duration::from_secs(1));
+        sleep(Duration::from_secs(1));
+    }
+}
+
+pub fn stop_tracking() {
+    let bin_name = current_exe()
+        .unwrap_or_default()
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string();
+    let pid = id();
+
+    if let Ok(output) = Command::new("pgrep").arg("-x").arg(&bin_name).output() {
+        let pids = String::from_utf8_lossy(&output.stdout);
+
+        for pid_str in pids.lines() {
+            if let Ok(p) = pid_str.parse::<u32>() {
+                if p != pid {
+                    let _ = Command::new("kill").arg(p.to_string()).status();
+                }
+            }
+        }
     }
 }
