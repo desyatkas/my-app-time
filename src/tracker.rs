@@ -34,62 +34,48 @@ pub fn start_tracking() {
 }
 
 pub fn stop_tracking() {
-    let bin_name = current_exe()
-        .unwrap_or_default()
-        .file_name()
-        .unwrap_or_default()
-        .to_string_lossy()
-        .to_string();
-    let pid = id();
+    let pids = get_running_pids();
 
-    if let Ok(output) = Command::new("pgrep").arg("-x").arg(&bin_name).output() {
-        let pids = String::from_utf8_lossy(&output.stdout);
-
-        for pid_str in pids.lines() {
-            if let Ok(p) = pid_str.parse::<u32>() {
-                if p != pid {
-                    let _ = Command::new("kill").arg(p.to_string()).status();
-                }
-            }
-        }
+    for &p in &pids {
+        let _ = Command::new("kill").arg(p.to_string()).spawn();
     }
 }
 
 pub fn get_tracking_status() {
-    let bin_name = current_exe()
-        .unwrap_or_default()
-        .file_name()
-        .unwrap_or_default()
-        .to_string_lossy()
-        .to_string();
-    let pid = id();
+    let pids = get_running_pids();
 
-    if let Ok(output) = Command::new("pgrep").arg("-x").arg(&bin_name).output() {
-        let mut running = false;
-        let pids = String::from_utf8_lossy(&output.stdout);
-
-        for pid_str in pids.lines() {
-            if let Ok(p) = pid_str.parse::<u32>() {
-                if p != pid {
-                    running = true;
-
-                    break;
-                }
-            }
-        }
-
-        if running {
-            println!("Running");
-        } else {
-            println!("Not running");
-        }
+    if pids.is_empty() {
+        println!("Not running");
+    } else {
+        println!("Running");
     }
 }
 
-pub fn get_active_app() -> Option<String> {
+fn get_active_app() -> Option<String> {
     if let Ok(info) = get_active_window_info() {
         return Some(info.class_name);
     }
 
     None
+}
+
+fn get_running_pids() -> Vec<u32> {
+    let bin_name = current_exe()
+        .unwrap_or_default()
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string();
+    let pid = id();
+
+    if let Ok(output) = Command::new("pgrep").arg("-x").arg(&bin_name).output() {
+        let pids = String::from_utf8_lossy(&output.stdout);
+
+        pids.lines()
+            .filter_map(|s| s.parse::<u32>().ok())
+            .filter(|&p| p != pid)
+            .collect()
+    } else {
+        Vec::new()
+    }
 }
