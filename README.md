@@ -30,7 +30,12 @@ curl -fsSL https://raw.githubusercontent.com/desyatkas/my-app-time/main/install.
 
 ## Usage
 
-Keep `mat --start` running in the background, use `mat --tui` to see your usage time for every app.
+* `mat --start` to activate tracking process (keep this actively running in the background!)
+* `mat --stop` to disable tracking process
+* `mat --status` to check if tracking is active or not
+* `mat --tui` to open the interface with all your apps and usage time from today, last week and last month
+* `mat --help` to get help message
+* `mat --version` to get currently installed version
 
 ## Feedback
 
