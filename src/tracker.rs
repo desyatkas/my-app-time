@@ -13,10 +13,14 @@ pub fn start_tracking() {
     let mut tick = 0;
     let mut stats = load_for_date(&get_dates().0);
 
+    println!("Starting app tracking process...");
+
     loop {
         let app = get_active_app();
 
         if let Some(a) = app {
+            println!("Detected app: {a}");
+
             *stats.usage.entry(a).or_insert(0) += 1;
         }
 
@@ -24,8 +28,11 @@ pub fn start_tracking() {
 
         if tick % 60 == 0 {
             let today = get_dates().0;
+            let date_str = path_for_date(&today);
 
-            create_dir_all(path_for_date(&today).parent().unwrap()).unwrap();
+            println!("Saving data to `{}`...", date_str.to_str().unwrap());
+
+            create_dir_all(date_str.parent().unwrap()).unwrap();
             write(path_for_date(&today), to_string_pretty(&stats).unwrap()).unwrap();
         }
 
@@ -37,6 +44,8 @@ pub fn stop_tracking() {
     let pids = get_running_pids();
 
     for &p in &pids {
+        println!("Killing app tracking process... PID: {}", p.to_string());
+
         let _ = Command::new("kill").arg(p.to_string()).spawn();
     }
 }
@@ -45,9 +54,9 @@ pub fn get_tracking_status() {
     let pids = get_running_pids();
 
     if pids.is_empty() {
-        println!("Not running");
+        println!("Status: Inactive");
     } else {
-        println!("Running");
+        println!("Status: Active");
     }
 }
 
