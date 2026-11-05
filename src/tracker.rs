@@ -9,14 +9,6 @@ use std::{
     time::Duration,
 };
 
-pub fn get_active_app() -> Option<String> {
-    if let Ok(info) = get_active_window_info() {
-        return Some(info.class_name);
-    }
-
-    None
-}
-
 pub fn start_tracking() {
     let mut tick = 0;
     let mut stats = load_for_date(&get_dates().0);
@@ -61,4 +53,43 @@ pub fn stop_tracking() {
             }
         }
     }
+}
+
+pub fn get_tracking_status() {
+    let bin_name = current_exe()
+        .unwrap_or_default()
+        .file_name()
+        .unwrap_or_default()
+        .to_string_lossy()
+        .to_string();
+    let pid = id();
+
+    if let Ok(output) = Command::new("pgrep").arg("-x").arg(&bin_name).output() {
+        let mut running = false;
+        let pids = String::from_utf8_lossy(&output.stdout);
+
+        for pid_str in pids.lines() {
+            if let Ok(p) = pid_str.parse::<u32>() {
+                if p != pid {
+                    running = true;
+
+                    break;
+                }
+            }
+        }
+
+        if running {
+            println!("Running");
+        } else {
+            println!("Not running");
+        }
+    }
+}
+
+pub fn get_active_app() -> Option<String> {
+    if let Ok(info) = get_active_window_info() {
+        return Some(info.class_name);
+    }
+
+    None
 }

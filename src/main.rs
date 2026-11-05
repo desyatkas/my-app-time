@@ -14,7 +14,7 @@ fn main() {
     } else if args.stop {
         tracker::stop_tracking();
     } else if args.status {
-        // TODO
+        tracker::get_tracking_status();
     } else if args.tui {
         tui::run_tui();
     }
