@@ -1,6 +1,6 @@
 [package]
 name = "my-app-time"
-version = "0.1.0-dev"
+version = "1.0.0"
 edition = "2024"
 description = "Your app usage time tracker"
 repository = "https://github.com/desyatkas/my-app-time"
