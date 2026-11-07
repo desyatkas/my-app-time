@@ -1,80 +1,57 @@
 # Contributing
 
-Thanks for taking the time to contribute!
+Thanks for taking the time to contribute! Open source thrives on community input, so whether you're fixing a typo, squashing a bug, or adding a new feature - you're awesome. This guide will help you get started.
 
-Open source thrives on community input, so whether you're fixing a typo, squashing a bug, or adding a new feature - you're awesome
+## How to Contribute
 
-This guide will help you get started
-
-## How To Contribute
-
-It's pretty simple
-
+It's pretty simple:
 1. Fork the repository
-2. Create your branch:
-    ```Shell
-    git checkout -b my-cool-feature
+2. Create your branch (`<type>/<description>`)
+    ```sh
+    git checkout -b feat/my-cool-feature
     ```
 3. Make changes
-4. Commit:
-    ```Shell
+4. Commit
+    ```sh
     git commit -m "feat: add cool button"
     ```
-5. Push:
+5. Push
+    ```sh
+    git push origin feat/my-cool-feature
     ```
-    git push origin my-cool-feature
-    ```
-6. Open a Pull Request with a clear description
+6. Open a pull request with a clear description
 
-We'll review, discuss if needed, and merge once it's ready
-
-## What You Can Contribute
-
-Basically everything:
-
-* Bug reports
-* Fixes and refactors
-* New features
-* Documentation improvements
-* Tests and test fixes
+We'll review, discuss if needed, and merge once it's ready.
 
 ## Commit Messages
 
-We follow the [Conventional Commits](https://www.conventionalcommits.org) standard, so your commit messages should follow this format:
-
-```
-<type>[optional scope]: <description>
-```
+We follow the [Conventional Commits](https://www.conventionalcommits.org) standard, so your commit messages should follow this format: `<type>[optional scope]: <description>`.
 
 Preferred type labels and their use cases:
+* `build`: affects the build system or external dependencies
+* `chore`: general maintenance
+* `ci`: changes CI configuration or scripts
+* `docs`: improves and/or fixes documentation
+* `feat`: introduces/updates a feature
+* `fix`: patches a bug
+* `perf`: improves performance
+* `refactor`: restructures or improves code without changing behavior
+* `revert`: reverts a previous commit
+* `style`: formatting without affecting code behavior
+* `test`: adds or improves tests
 
-* `feat` - A new feature implementation
-* `impr` - An existing feature improvement
-* `fix` - A bug fix
-* `docs` - Documentation updates
-* `refactor` - A code change that neither fixes a bug nor adds a feature
-* `build` - Build system changes or dependencies changes
-* `chore` - Everything else
-
-Example commit messages:
-
-* `feat: add cool button`
-* `impr: optimize cool button to make it faster`
-* `fix: cool button didn't work on Mondays`
-* `docs(README.md): add "Configuration" section`
-* `refactor: remove unused block of code`
-* `build(Cargo.toml): add serde to dependencies`
-* `chore: update demo_1.png`
+These labels also apply to your branch names:
+* `feat/add-cool-button`
+* `fix/button-not-working`
+* `docs/update-readme`
 
 ## Pull Request Guidelines
 
-* One feature per PR
+* Keep your PR focused on a single change
 * Keep your PR description short but informative
-* Tag relevant issues
-* Make sure it builds
-
-We'll review as soon as possible!
+* Update documentation when necessary
+* Make sure it builds and runs as expected
 
 ## License
 
-By contributing, you agree that your code will be licensed under the [GPL-3.0-or-later](/LICENSE)
+By contributing, you agree that your contributions will be licensed under the terms of the project's [GPL-3.0-or-later](LICENSE) license.
