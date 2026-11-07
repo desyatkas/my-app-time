@@ -11,34 +11,41 @@
 
 ## Description
 
-**MyAppTime** is your app usage time tracker
+**MyAppTime** is your app usage time tracker.
 
 ## Features
 
-// TODO
+* Tracks current active app's class name and usage time
+* Saves all usage stats to `~/.local/share/my-app-time/` in a JSON file named with date in `YYYY-MM-DD` format every minute (example: `2026-10-27.json` is stats for October 27th, 2026)
+* TUI with actual data from the last: day, week, month
 
 ## Installation
 
-```Shell
-bash <(curl -fsSL https://raw.githubusercontent.com/desyatkoff/my-app-time/main/install.sh)
+```sh
+curl -fsSL https://raw.githubusercontent.com/desyatkas/my-app-time/main/install.sh | sh
 ```
 
 ## Usage
 
-// TODO
+* `mat --start` to activate tracking process (keep this actively running in the background!)
+* `mat --stop` to disable tracking process
+* `mat --status` to check if tracking is active or not
+* `mat --tui` to open the interface with all your apps and usage time from today, last week and last month
+* `mat --help` to get help message
+* `mat --version` to get currently installed version
 
 ## Feedback
 
-Found a bug? [Open an issue](https://github.com/desyatkoff/my-app-time/issues/new)
+Found a bug? [Open an issue](https://github.com/desyatkas/my-app-time/issues/new).
 
-Want to request a feature? [Start a discussion](https://desyatkoff/my-app-time/discussions/new?category=ideas)
+Want to request a feature? [Start a discussion](https://desyatkas/my-app-time/discussions/new?category=ideas).
 
 ## Contributing
 
-Refer to [CONTRIBUTING.md](/CONTRIBUTING.md)
+Refer to [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ## License
 
-Copyright (C) Sergey Desyatkov
+Copyright © 2026 Sergey Desyatkov, except where otherwise stated.
 
-MyAppTime is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](/LICENSE) file for more details
+MyAppTime is licensed under the GNU General Public License v3.0 or later. See the [LICENSE](/LICENSE) file for more details.
