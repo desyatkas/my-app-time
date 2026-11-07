@@ -13,9 +13,6 @@
 
 **MyAppTime** is your app usage time tracker.
 
-> [!NOTE]
-> Currently works for KDE Plasma only! Support for other DEs and WMs will be added in future.
-
 ## Features
 
 * Tracks current active app's class name and usage time
