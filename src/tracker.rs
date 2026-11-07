@@ -1,5 +1,4 @@
 use crate::storage::{get_dates, load_for_date, path_for_date};
-use kdotool::get_active_window_info;
 use serde_json::to_string_pretty;
 use std::{
     env::current_exe,
@@ -8,15 +7,16 @@ use std::{
     thread::sleep,
     time::Duration,
 };
+use wdotool_core::detector::{Environment, build};
 
-pub fn start_tracking() {
+pub async fn start_tracking() {
     let mut tick = 0;
     let mut stats = load_for_date(&get_dates().0);
 
     println!("Starting app tracking process...");
 
     loop {
-        let app = get_active_app();
+        let app = get_active_app().await;
 
         if let Some(a) = app {
             println!("Detected app: {a}");
@@ -60,12 +60,11 @@ pub fn get_tracking_status() {
     }
 }
 
-fn get_active_app() -> Option<String> {
-    if let Ok(info) = get_active_window_info() {
-        return Some(info.class_name);
-    }
+async fn get_active_app() -> Option<String> {
+    let backend = build(&Environment::detect(), None).await.ok()?;
+    let info = backend.active_window().await.ok().unwrap()?;
 
-    None
+    info.app_id
 }
 
 fn get_running_pids() -> Vec<u32> {

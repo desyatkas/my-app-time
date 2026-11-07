@@ -6,11 +6,12 @@ mod tui;
 use clap::Parser;
 use cli::Args;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args = Args::parse();
 
     if args.start {
-        tracker::start_tracking();
+        tracker::start_tracking().await;
     } else if args.stop {
         tracker::stop_tracking();
     } else if args.status {
