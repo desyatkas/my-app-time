@@ -4,19 +4,31 @@ use std::{
     env::current_exe,
     fs::{create_dir_all, write},
     process::{Command, id},
-    thread::sleep,
     time::Duration,
 };
-use wdotool_core::detector::{Environment, build};
+use tokio::time::sleep;
+use wdotool_core::{
+    DynBackend,
+    detector::{Environment, build},
+};
 
 pub async fn start_tracking() {
+    println!("Starting app tracking process...");
+
+    let environment = Environment::detect();
+    let backend = match build(&environment, None).await {
+        Ok(backend) => backend,
+        Err(error) => {
+            eprintln!("Failed to initialize window tracking backend: {error}");
+
+            return;
+        }
+    };
     let mut tick = 0;
     let mut stats = load_for_date(&get_dates().0);
 
-    println!("Starting app tracking process...");
-
     loop {
-        let app = get_active_app().await;
+        let app = get_active_app(&backend).await;
 
         if let Some(a) = app {
             println!("Detected app: {a}");
@@ -36,7 +48,7 @@ pub async fn start_tracking() {
             write(path_for_date(&today), to_string_pretty(&stats).unwrap()).unwrap();
         }
 
-        sleep(Duration::from_secs(1));
+        sleep(Duration::from_secs(1)).await;
     }
 }
 
@@ -60,9 +72,8 @@ pub fn get_tracking_status() {
     }
 }
 
-async fn get_active_app() -> Option<String> {
-    let backend = build(&Environment::detect(), None).await.ok()?;
-    let info = backend.active_window().await.ok().unwrap()?;
+async fn get_active_app(backend: &DynBackend) -> Option<String> {
+    let info = backend.active_window().await.ok()??;
 
     info.app_id
 }
